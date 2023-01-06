@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>rock paper scissors </title>
+</head>
+<style>
+	body{
+		background: #222;
+		display:flex;
+		justify-content:center;
+		margin-top:0;
+		color:#fff;
+	}
+	.box{
+		display:block;
+		margin-top:5px;
+		/*border:1px solid #f00;*/
+		background: #0ff;
+	}
+	#main{
+		display:flex;
+		justify-content:space-around;
+		align-items:space-around;
+		flex-wrap:wrap;
+		background: #333;
+		height:99vh;
+		width:99vw;
+	}
+	#score{
+		display:none;
+		flex-direction:column;
+		width:100%;
+		height:10vh;
+		font-size:4vh;
+		text-align:center;
+		
+	}
+	#score_n{
+		overflow-x: scroll;
+		margin-left:calc(50% - 50%/2);
+		width:50%;
+		height:5vh;
+		background: #700;
+	}
+	#score_s{
+		margin-left:calc(50% - 50%/2);
+		width:50%;
+		height:5vh;
+		background: #755;
+	}
+	
+
+	#choice{
+		display:none;
+		box-sizing:border-box;
+		justify-content:space-around;
+		align-items:center;
+		width:100%;
+		height:20vh;
+	}
+	.pb{
+		width:195px;
+		height:400px;
+		max-width:50%;
+	}
+
+	#pc{
+		height:60vh;
+		width:45vw;
+		display:none;
+		overflow:hidden;
+		justify-content:center;
+		align-items:center;
+	}
+
+	#cc{
+		height:60vh;
+		width:45vw;
+		display:none;
+		overflow:hidden;
+		justify-content:center;
+		align-items:center;
+	}
+
+	#name{
+		width:80%;
+		height:40%;
+		font-size: 110%;
+	}
+	#name:focus{
+		background: #444;
+		color:#fff;
+	}
+	#block_inp{
+		color:#222;
+		margin-top:calc((100vh / 2) - (20vh/2));
+		text-align:center;
+		background: #0ff;
+		height:23vh;
+		width:70vw;
+	}
+	#inp_name{
+		font-size: 5vh;
+		height:95%;
+		width:100%;
+	}
+	#btn{
+		margin-top:10px;
+		height:5vh;
+		width:80%;
+		font-size:85%;
+	}
+	.mes{
+		display:block;
+		opacity:0;
+		position:absolute;
+		left:calc(50% - 70%/2);
+		overflow: hidden;
+		
+
+		padding-top:calc(25% - 5vh/2);
+		box-sizing:border-box;
+		font-size:5vh;
+		text-align: center;
+		color:white;
+		border-radius:40px;
+		top:40%;
+		height:30%;
+		width:70%;
+		background: #0f0;
+		z-index:-1;
+	}
+
+	.bscreen{
+		position:absolute;
+		
+		width:100%;
+		height:100%;
+		background:#000;
+		opacity:0;
+		z-index:-1;
+	}
+
+	img{
+		margin-top:calc(50px - 90px/2);
+		height:200px;
+		width:200px;
+	}
+
+</style>
+<body>
+	<div class="box m" id="main">
+		<div class="bscreen box"></div>
+		<div class="mes box" onclick="mesOffEff()"></div>
+			<div class="box" id="score">
+				<div id="score_n"></div>
+				<div id="score_s"></div>
+			</div>
+
+			<div class="box" id="choice">
+				<img id="img1" onclick="imgBord(img1)" src="rock.png" alt="rock" title="rock">
+				<img id="img2" onclick="imgBord(img2)" src="scissors.png" alt="scissors" title="scissors">
+				<img id="img3" onclick="imgBord(img3)" src="paper.png" alt="paper" title="paper" >
+			</div>
+
+			<div  class="box pb" id="pc"></div>
+			<div class="box pb" id="cc"></div>
+			
+			<div id="block_inp">
+				<div id="inp_name">Enter name
+					<input id="name" type="text" maxlength="10"/>
+				    <input id="btn" type="button" value="ok">
+				</div>
+				
+			</div>
+			
+	</div>
+</body>
+<script>
+
+	const inp_name = document.querySelector("#block_inp");
+
+	const bv = "0px solid #fff";
+	const mes = document.querySelector(".mes");
+	const choice = document.querySelector("#choice");
+	const score = document.querySelector("#score");
+	const score_n = document.querySelector("#score_n");
+	const score_s = document.querySelector("#score_s");
+	const pc = document.querySelector("#pc");
+	const cc = document.querySelector("#cc");
+	const name = document.querySelector("#name");
+	const img = document.querySelector("img");
+	const bscreen = document.querySelector(".bscreen");
+
+	const imgs = ["rock.png","scissors.png","paper.png"];
+
+	const egw = "END GAME WIN ";
+	const time = 1000;
+
+	let animscore = 1;
+
+	let mas = [scorep = 0,scorec = 0];
+	let blscrAct = 0;
+
+	function mesOnEff(){
+		mes.style.transition = "1000ms";
+		mes.style.opacity = "1";
+		mes.style.zIndex = "5";
+		mes.style.top = "30%";
+	}
+
+	function mesOffEff(){
+		mes.style.opacity = "0";
+		//mes.style.transition = "500ms";
+		mes.style.zIndex = "-1";
+			
+		mes.style.top = "40%";
+		checkScreen();
+		cc.appendChild(imgSrc2);
+		score_s.textContent = mas[0]+" - "+mas[1];
+			
+	}
+
+	function checkScreen(){
+		blscrAct?BlackScr("-1","0"):BlackScr("1",".5");
+		blscrAct != 1?blscrAct = 1:blscrAct = 0;
+	}
+
+	btn.onclick = start;
+
+	function start(){
+		inp_name.style.display = "none";
+		choice.style.display = "flex";
+		score.style.display = "flex";
+		pc.style.display = "flex";
+		cc.style.display = "flex";
+		
+
+		if(name.value == "wad"){
+			tags = [score_n,score_s,score,choice,pc,cc,];
+
+			for(i = 0; i < tags.length; i++){
+				tags[i].style.backgroundColor = "#663399";
+				tags[i].style.color = "#0ff";
+			}
+			
+		}
+
+	
+		score_n.textContent = name.value.toUpperCase() || "YOU";
+		score_s.textContent = mas[0]+" - "+mas[1];
+	}
+
+	function BlackScr(z,t){
+		bscreen.style.opacity = t
+		bscreen.style.transition = "1s";
+		bscreen.style.zIndex = z;
+	}
+
+	function imgBord(x){
+		BlackScr();
+		mesOffEff();
+
+		let img1 = document.querySelector("#img1");
+		let img2 = document.querySelector("#img2");
+		let img3 = document.querySelector("#img3");
+
+		let imgs = [img1,img2,img3];
+
+		for(i=0; i<imgs.length; i++){
+			imgs[i].style.border = bv;
+		}
+		name.value!="wad"?x.style.border = "2px solid #f00":x.style.border = "3px solid #0ff";
+		drawIMG(x);
+	}
+
+	
+
+	function rndIMG(){
+		return rndIMGpc = Math.floor(Math.random()*3)+1;
+	}
+
+	let curIMG = 0;
+	let rndIMGpc = 0;
+
+	function drawIMG(x){
+		pc.innerHTML = "";
+		rndIMG();
+		let img = document.createElement("IMG");
+
+		switch(x){
+			case img1:
+			img.src = imgs[0];
+			curIMG = 1;
+			break;
+
+			case img2:
+			img.src = imgs[1];
+			curIMG = 2;
+			break;
+
+			case img3:
+			img.src = imgs[2];
+			curIMG = 3;
+			break;
+		}
+		
+		pc.appendChild(img);
+		
+		checkWIN(curIMG,rndIMGpc);
+		genIMG(rndIMGpc);
+	
+	}
+	const u = undefined;
+	let res = 1;
+
+	function checkWIN(nump,numc){
+		
+		if((nump == 1 && numc == 1)||(nump == 2 && numc == 2)||
+		   (nump == 3 && numc == 3))
+				res  = 1;
+		else if((nump == 1 && numc == 2)||(nump == 2 && numc == 3)||
+			    (nump == 3 && numc == 1)){
+				//mas[0]++;
+				res = 2;
+				animscore = 2;
+		}
+		else if((nump != 1 && numc != 2)||(nump != 2 && numc != 3)||
+			    (nump != 3 && numc != 1)){
+				//mas[1]++;
+				res = 3;
+				animscore = 3;
+		}
+		mes.textContent = "";
+		genIMG(u,res)
+		
+		checkResWIN(res);
+		
+	}
+
+	function checkResWIN(r){
+		switch(r){
+			case 1:
+			mes.textContent = "DRAW";
+			break;
+
+			case 2:
+			mes.textContent = name.value.toUpperCase() +" WIN";
+			break;
+
+			case 3:
+			mes.textContent = "PC WIN";
+			break;
+		}
+	}
+
+	function whoFirstGet10(){
+		if(mas[0] >= 10){
+			alert(egw + "--" + name.value.toUpperCase() + "--");
+			clearScore();
+		}
+		else if(mas[1] >= 10){
+			alert(egw + "PC");
+			clearScore();
+		}
+
+
+	}
+		function clearScore(){
+			for(i=0; i<mas.length; i++){
+				mas[i] = 0;
+			}
+
+			pc.innerHTML = "";
+			cc.innerHTML = "";
+		}
+
+	imgSrc2 = document.createElement("IMG");
+
+	function genIMG(rn,res){
+
+		cc.innerHTML = "";
+		
+		switch(rn){
+			case 1:
+			imgSrc2.src = imgs[0];
+			break;
+			case 2:
+			imgSrc2.src = imgs[1];
+			break;
+			case 3:
+			imgSrc2.src = imgs[2];
+			break;
+
+		}
+		setTimeout(()=>{
+			
+			mesOnEff();
+			switch(res){
+				case 2:
+				mas[0]++;
+				break;
+				case 3:
+				mas[1]++;
+				break;
+
+			}
+			whoFirstGet10();
+		},time)
+	}
+
+
+
+	window.onorientationchange = function() { 
+  //console.log("the orientation of the device is now " + screen.orientation.angle);
+  alert("you rotate you phone");
+};
+</script>
+</html>
